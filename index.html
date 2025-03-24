@@ -10,7 +10,7 @@
       crossorigin="anonymous"
     />
     <link rel="shortcut icon" href="favicon.png" type="image/png" />
-    <title>Lưu trữ kỷ niệm Thiện và Tiên</title>
+    <title>Kỷ niệm tình yêu Thiện và Tiên</title>
     <style>
       body {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -18,6 +18,7 @@
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', sans-serif;
+        overflow-x: hidden;
       }
 
       h1 {
@@ -48,6 +49,53 @@
         transform: scale(1.02);
       }
 
+      /* Timer Section */
+      .timer-container {
+        text-align: center;
+        margin: 2rem 0;
+        color: #e91e63;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeIn 1.5s ease-in;
+      }
+
+      .timer-container span {
+        color: #d81b60;
+        font-size: 2rem;
+        margin: 0 5px;
+      }
+
+      /* Heart Animation */
+      .heart {
+        position: fixed;
+        bottom: -50px;
+        font-size: 2rem;
+        color: #ff6f61;
+        animation: float 6s infinite ease-in-out;
+        opacity: 0.7;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) translateX(0);
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) translateX(20px);
+          opacity: 0;
+        }
+      }
+
       /* Responsive adjustments */
       @media (max-width: 768px) {
         h1 {
@@ -58,6 +106,15 @@
         .videoBanner {
           padding: 15px;
         }
+
+        .timer-container {
+          font-size: 1.2rem;
+          padding: 1rem;
+        }
+
+        .timer-container span {
+          font-size: 1.5rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -67,6 +124,14 @@
         
         .videoBanner {
           padding: 10px;
+        }
+
+        .timer-container {
+          font-size: 1rem;
+        }
+
+        .timer-container span {
+          font-size: 1.2rem;
         }
       }
 
@@ -81,10 +146,30 @@
           transform: translateY(0);
         }
       }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
-    <h1>Lưu trữ kỷ niệm Thiện và Tiên</h1>
+    <h1>Kỷ niệm tình yêu Thiện và Tiên</h1>
+    
+    <!-- Timer Section -->
+    <div class="timer-container">
+      Chúng ta đã yêu nhau được: 
+      <span id="days">0</span> ngày, 
+      <span id="hours">0</span> giờ, 
+      <span id="minutes">0</span> phút, 
+      <span id="seconds">0</span> giây.
+    </div>
+
+    <!-- Video Section -->
     <div class="videoBanner">
       <video width="320" height="240" controls autoplay muted>
         <source src="./access/video/6438981013040.mp4" type="video/mp4" />
@@ -104,6 +189,43 @@
         video.play().catch(error => {
           console.log('Autoplay was prevented:', error);
         });
+
+        // Timer logic
+        const startDate = new Date('2024-10-10T00:00:00');
+        
+        function updateTimer() {
+          const now = new Date();
+          const diff = now - startDate;
+
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById('days').textContent = days;
+          document.getElementById('hours').textContent = hours;
+          document.getElementById('minutes').textContent = minutes;
+          document.getElementById('seconds').textContent = seconds;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        // Floating hearts animation
+        function createHeart() {
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          heart.innerHTML = '❤️';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+          document.body.appendChild(heart);
+
+          setTimeout(() => {
+            heart.remove();
+          }, 6000);
+        }
+
+        setInterval(createHeart, 300);
       });
     </script>
   </body>
