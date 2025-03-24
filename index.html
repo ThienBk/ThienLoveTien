@@ -17,8 +17,67 @@
         min-height: 100vh;
         margin: 0;
         padding: 0;
-        font-family: 'Segoe UI', sans-serif;
+        font-family: "Segoe UI", sans-serif;
         overflow-x: hidden;
+      }
+
+      /* Preloader */
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+
+      .preloader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .love-text {
+        font-family: 'Great Vibes', cursive;
+        font-size: 5rem;
+        color: #ff6f61;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        position: relative;
+        animation: pulse 2s infinite ease-in-out;
+      }
+
+      .love-text::before {
+        content: '♥';
+        position: absolute;
+        font-size: 3rem;
+        top: -20px;
+        left: -40px;
+        color: #ff4757;
+        animation: floatHeart 3s infinite ease-in-out;
+      }
+
+      .love-text::after {
+        content: '♥';
+        position: absolute;
+        font-size: 3rem;
+        bottom: -20px;
+        right: -40px;
+        color: #ff4757;
+        animation: floatHeart 3s infinite ease-in-out;
+      }
+
+      /* Content */
+      .content {
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      .content.visible {
+        opacity: 1;
       }
 
       h1 {
@@ -26,7 +85,7 @@
         padding: 2rem 0;
         color: #2c3e50;
         font-size: 2.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         animation: fadeInDown 1s ease-in;
       }
 
@@ -41,7 +100,7 @@
         width: 100%;
         height: auto;
         border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
       }
 
@@ -59,7 +118,7 @@
         background: rgba(255, 255, 255, 0.8);
         padding: 1.5rem;
         border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
@@ -72,6 +131,21 @@
         margin: 0 5px;
       }
 
+      /* Carousel Section */
+      .carousel-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 20px;
+      }
+
+      .carousel-item img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
       /* Heart Animation */
       .heart {
         position: fixed;
@@ -80,6 +154,29 @@
         color: #ff6f61;
         animation: float 6s infinite ease-in-out;
         opacity: 0.7;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        background: rgba(255, 255, 255, 0.9);
+        color: #2c3e50;
+        font-size: 1rem;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      footer .quote {
+        font-style: italic;
+        color: #e91e63;
+        margin-bottom: 0.5rem;
+      }
+
+      footer .names {
+        font-weight: bold;
       }
 
       @keyframes float {
@@ -96,13 +193,37 @@
         }
       }
 
+      @keyframes floatHeart {
+        0% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-10px) scale(1.2);
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
       /* Responsive adjustments */
       @media (max-width: 768px) {
         h1 {
           font-size: 2rem;
           padding: 1.5rem 1rem;
         }
-        
+
         .videoBanner {
           padding: 15px;
         }
@@ -115,13 +236,26 @@
         .timer-container span {
           font-size: 1.5rem;
         }
+
+        .carousel-item img {
+          height: 300px;
+        }
+
+        .love-text {
+          font-size: 3.5rem;
+        }
+
+        footer {
+          font-size: 0.9rem;
+          padding: 1.5rem 0;
+        }
       }
 
       @media (max-width: 480px) {
         h1 {
           font-size: 1.5rem;
         }
-        
+
         .videoBanner {
           padding: 10px;
         }
@@ -132,6 +266,19 @@
 
         .timer-container span {
           font-size: 1.2rem;
+        }
+
+        .carousel-item img {
+          height: 200px;
+        }
+
+        .love-text {
+          font-size: 2.5rem;
+        }
+
+        footer {
+          font-size: 0.8rem;
+          padding: 1rem 0;
         }
       }
 
@@ -156,25 +303,99 @@
         }
       }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   </head>
   <body>
-    <h1>Kỷ niệm tình yêu Thiện và Tiên</h1>
-    
-    <!-- Timer Section -->
-    <div class="timer-container">
-      Chúng ta đã yêu nhau được: 
-      <span id="days">0</span> ngày, 
-      <span id="hours">0</span> giờ, 
-      <span id="minutes">0</span> phút, 
-      <span id="seconds">0</span> giây.
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="love-text">Love</div>
     </div>
 
-    <!-- Video Section -->
-    <div class="videoBanner">
-      <video width="320" height="240" controls autoplay muted>
-        <source src="./access/video/6438981013040.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <!-- Main Content -->
+    <div class="content">
+      <h1>Kỷ niệm tình yêu Thiện và Tiên</h1>
+
+      <!-- Timer Section -->
+      <div class="timer-container">
+        Chúng ta đã yêu nhau được:
+        <span id="days">0</span> ngày, <span id="hours">0</span> giờ,
+        <span id="minutes">0</span> phút, <span id="seconds">0</span> giây.
+      </div>
+
+      <!-- Video Section -->
+      <div class="videoBanner">
+        <video width="320" height="240" controls autoplay muted>
+          <source src="./access/video/6438981013040.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Carousel Section -->
+      <div class="carousel-container">
+        <div id="memoryCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img
+                src="./access/image/z6439024520625_d05355748513ce2519ddcab633a995b7.jpg"
+                class="d-block w-100"
+                alt="Ảnh kỷ niệm 1"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="./access/image/z6439024524076_903cfc187b41c62e864b35eaf102bc9a.jpg"
+                class="d-block w-100"
+                alt="Ảnh kỷ niệm 2"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="./access/image/z6330668684979_7f30e43487ed241a6797e094342f1550.jpg"
+                class="d-block w-100"
+                alt="Ảnh kỷ niệm 3"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="./access/image/z6439025451044_09413256f3bfccde2c07d01063410cc1.jpg"
+                class="d-block w-100"
+                alt="Ảnh kỷ niệm 4"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="./access/image/z6439025461510_a5f1bc9e32773f12400b8421edec44d8.jpg"
+                class="d-block w-100"
+                alt="Ảnh kỷ niệm 5"
+              />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#memoryCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#memoryCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <footer>
+        <p class="quote">"Mãi mãi bên nhau, dù thời gian có trôi."</p>
+        <p class="names">Thiện & Tiên - 10/10/2024</p>
+      </footer>
     </div>
 
     <script
@@ -183,29 +404,38 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      // Đảm bảo video chạy khi trang load
-      document.addEventListener('DOMContentLoaded', function() {
-        const video = document.querySelector('video');
-        video.play().catch(error => {
-          console.log('Autoplay was prevented:', error);
+      // Preloader logic
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          document.querySelector('.preloader').classList.add('hidden');
+          document.querySelector('.content').classList.add('visible');
+        }, 3000); // Hiển thị preloader trong 3 giây
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const video = document.querySelector("video");
+        video.play().catch((error) => {
+          console.log("Autoplay was prevented:", error);
         });
 
         // Timer logic
-        const startDate = new Date('2024-10-10T00:00:00');
-        
+        const startDate = new Date("2024-10-10T00:00:00");
+
         function updateTimer() {
           const now = new Date();
           const diff = now - startDate;
 
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const hours = Math.floor(
+            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-          document.getElementById('days').textContent = days;
-          document.getElementById('hours').textContent = hours;
-          document.getElementById('minutes').textContent = minutes;
-          document.getElementById('seconds').textContent = seconds;
+          document.getElementById("days").textContent = days;
+          document.getElementById("hours").textContent = hours;
+          document.getElementById("minutes").textContent = minutes;
+          document.getElementById("seconds").textContent = seconds;
         }
 
         updateTimer();
@@ -213,11 +443,11 @@
 
         // Floating hearts animation
         function createHeart() {
-          const heart = document.createElement('div');
-          heart.classList.add('heart');
-          heart.innerHTML = '❤️';
-          heart.style.left = Math.random() * 100 + 'vw';
-          heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.innerHTML = "❤️";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = Math.random() * 2 + 4 + "s";
           document.body.appendChild(heart);
 
           setTimeout(() => {
