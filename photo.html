@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/png" />
+    <title>Album Ảnh Kỷ Niệm Thiện và Tiên</title>
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Navbar */
+      .navbar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+      }
+
+      .navbar-toggler {
+        border: none;
+        background: transparent;
+      }
+
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+      }
+
+      .navbar-nav {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-link {
+        color: #2c3e50;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #e91e63;
+      }
+
+      /* Content */
+      h1 {
+        text-align: center;
+        padding: 2rem 0;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        animation: fadeInDown 1s ease-in;
+      }
+
+      .album-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .album-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .album-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      .album-item:hover {
+        transform: scale(1.05);
+      }
+
+      .album-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .album-item::after {
+        content: '♥';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 2rem;
+        color: #ff6f61;
+        opacity: 0.7;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        background: rgba(255, 255, 255, 0.9);
+        color: #2c3e50;
+        font-size: 1rem;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      footer .quote {
+        font-style: italic;
+        color: #e91e63;
+        margin-bottom: 0.5rem;
+      }
+
+      footer .names {
+        font-weight: bold;
+      }
+
+      /* Animations */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+          padding: 1.5rem 1rem;
+        }
+
+        .album-container {
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 15px;
+        }
+
+        .album-item img {
+          height: 200px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .album-container {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 10px;
+        }
+
+        .album-item img {
+          height: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Trang Chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="show-photos">Ảnh</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="show-videos">Video</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <h1>Album Ảnh Kỷ Niệm Thiện và Tiên</h1>
+
+    <!-- Album Section -->
+    <div class="album-container">
+      <div class="album-item">
+        <img
+          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Ảnh kỷ niệm 1"
+        />
+      </div>
+      <div class="album-item">
+        <img
+          src="https://images.unsplash.com/photo-1518655048521-f130df041f66?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Ảnh kỷ niệm 2"
+        />
+      </div>
+      <div class="album-item">
+        <img
+          src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Ảnh kỷ niệm 3"
+        />
+      </div>
+      <div class="album-item">
+        <img
+          src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Ảnh kỷ niệm 4"
+        />
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <p class="quote">"Những khoảnh khắc bên nhau là những kỷ niệm đẹp nhất."</p>
+      <p class="names">Thiện & Tiên - 10/10/2024</p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Navbar functionality
+      const showVideosBtn = document.getElementById("show-videos");
+
+      showVideosBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        alert("Chuyển đến trang video");
+        // Logic để chuyển đến trang video
+      });
+    </script>
+  </body>
+</html>
