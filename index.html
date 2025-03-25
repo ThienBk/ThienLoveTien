@@ -251,22 +251,22 @@
         }
       }
 
-      /* FAB Styles - Updated for Mobile */
+      /* FAB Styles - Updated for Mobile and Clickable */
       .fab-wrapper {
         position: fixed;
-        bottom: 4rem; /* Slightly higher for better reach on mobile */
+        bottom: 4rem;
         right: 2rem;
         z-index: 1000;
-        user-select: none; /* Prevent text selection while dragging */
+        user-select: none;
         -webkit-user-select: none;
-        -webkit-touch-callout: none; /* Disable long-press context menu on iOS */
+        -webkit-touch-callout: none;
       }
 
       .fab {
         position: absolute;
         bottom: -1rem;
         right: -1rem;
-        width: 5rem; /* Larger for easier tapping */
+        width: 5rem;
         height: 5rem;
         background: #126ee2;
         border-radius: 50%;
@@ -277,7 +277,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        touch-action: none; /* Prevent default scrolling while dragging */
+        touch-action: none;
       }
 
       .fab:before {
@@ -372,6 +372,7 @@
         transition: all 0.3s ease;
         transform-origin: bottom right;
         transform: scale(0);
+        z-index: 1001;
       }
 
       .fab-checkbox:checked ~ .fab-wheel {
@@ -381,8 +382,8 @@
       .fab-action {
         position: absolute;
         background: #0f1941;
-        width: 3.5rem; /* Slightly larger for better tap target */
-        height: 3.5rem;
+        width: 4rem;
+        height: 4rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -391,7 +392,10 @@
         box-shadow: 0 0.1rem 1rem rgba(24, 66, 154, 0.82);
         transition: all 0.3s ease;
         opacity: 0;
-        font-size: 1.5rem; /* Larger icons for visibility */
+        font-size: 1.8rem;
+        z-index: 1002;
+        cursor: pointer;
+        touch-action: auto;
       }
 
       .fab-checkbox:checked ~ .fab-wheel .fab-action {
@@ -420,7 +424,6 @@
         bottom: -1rem;
       }
 
-      /* Thêm các lớp để điều chỉnh hướng của fab-wheel */
       .fab-wrapper.left .fab-wheel {
         transform-origin: bottom left !important;
         right: auto !important;
@@ -759,10 +762,12 @@
 
         setInterval(createHeart, 300);
 
-        // FAB Dragging Logic - Updated for Mobile and Dynamic Direction
+        // FAB Dragging Logic - Updated for Mobile and Clickable Actions
         const fabWrapper = document.querySelector('.fab-wrapper');
+        const fabActions = document.querySelectorAll('.fab-action');
         let isDragging = false;
         let initialX, initialY;
+        let dragStartTime;
 
         // Ensure FAB has initial position
         fabWrapper.style.left = (window.innerWidth - fabWrapper.offsetWidth - 20) + 'px'; // 20px from right
@@ -771,9 +776,35 @@
         fabWrapper.addEventListener('touchstart', startDragging, { passive: false });
         fabWrapper.addEventListener('mousedown', startDragging);
 
+        // Ngăn sự kiện kéo thả lan truyền khi click vào fab-action
+        fabActions.forEach(action => {
+          action.addEventListener('touchstart', (e) => {
+            e.stopPropagation(); // Ngăn sự kiện kéo thả
+          });
+          action.addEventListener('mousedown', (e) => {
+            e.stopPropagation(); // Ngăn sự kiện kéo thả
+          });
+
+          // Thêm sự kiện touchend để xử lý click trên mobile
+          action.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Nếu có href, chuyển hướng
+            if (action.href) {
+              window.location.href = action.href;
+            }
+          });
+
+          // Đảm bảo click trên desktop vẫn hoạt động
+          action.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        });
+
         function startDragging(e) {
           e.preventDefault();
           isDragging = true;
+          dragStartTime = Date.now();
           
           const touch = e.type === 'touchstart' ? e.touches[0] : e;
           initialX = touch.clientX - parseFloat(fabWrapper.style.left || fabWrapper.offsetLeft);
@@ -839,7 +870,8 @@
           updateFabDirection();
         }
 
-        function stopDragging() {
+        function stopDragging(e) {
+          e.preventDefault();
           isDragging = false;
           document.body.classList.remove('dragging');
           document.removeEventListener('touchmove', drag);
