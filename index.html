@@ -353,7 +353,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="photo.html" id="show-photos">Ảnh</a>
+            <a class="nav-link" href="photo.html" id="show-photo">Ảnh</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" id="show-videos">Video</a>
@@ -511,10 +511,10 @@
         setInterval(createHeart, 300);
 
         // Navbar functionality
-        const showPhotosBtn = document.getElementById('show-photos');
-        const showVideosBtn = document.getElementById('show-videos');
+        const showPhotoBtn = document.getElementById('show-photo');
+        const showVideoBtn = document.getElementById('show-video');
 
-        showPhotosBtn.addEventListener('click', (e) => {
+        showPhotoBtn.addEventListener('click', (e) => {
           e.preventDefault();
           alert("Chuyển đến trang ảnh");
           // Logic để chuyển đến trang ảnh hoặc hiển thị album ảnh
