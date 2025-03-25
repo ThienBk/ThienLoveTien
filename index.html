@@ -356,7 +356,7 @@
             <a class="nav-link" href="photo.html" id="show-photo">Ảnh</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" id="show-videos">Video</a>
+            <a class="nav-link" href="videos.html" id="show-videos">Video</a>
           </li>
         </ul>
       </div>
@@ -512,7 +512,7 @@
 
         // Navbar functionality
         const showPhotoBtn = document.getElementById('show-photo');
-        const showVideoBtn = document.getElementById('show-video');
+        const showVideosBtn = document.getElementById('show-videos');
 
         showPhotoBtn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -521,8 +521,7 @@
 
         showVideosBtn.addEventListener('click', (e) => {
           e.preventDefault();
-          alert("Chuyển đến trang video");
-          // Logic để chuyển đến trang video hoặc hiển thị album video
+          window.location.href = "videos.html"; // Chuyển hướng đến trang video
         });
       });
     </script>
