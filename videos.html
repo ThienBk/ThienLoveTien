@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <link rel="shortcut icon" href="favicon.png" type="image/png" />
+    <title>Album Video Kỷ Niệm Thiện và Tiên</title>
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Navbar */
+      .navbar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+      }
+
+      .navbar-toggler {
+        border: none;
+        background: transparent;
+      }
+
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+      }
+
+      .navbar-nav {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-link {
+        color: #2c3e50;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #e91e63;
+      }
+
+      /* Content */
+      h1 {
+        text-align: center;
+        padding: 2rem 0;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        animation: fadeInDown 1s ease-in;
+      }
+
+      .video-container {
+        max-width: 100%;
+        margin: 2rem auto;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+      }
+
+      .video-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        aspect-ratio: 16 / 9; /* Tỷ lệ ngang cho video */
+      }
+
+      .video-item video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .video-item:hover {
+        transform: scale(1.05);
+      }
+
+      .video-item::after {
+        content: "▶";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Fullscreen Video Modal */
+      .fullscreen-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fullscreen-modal.active {
+        display: flex;
+      }
+
+      .fullscreen-video {
+        max-width: 90%;
+        max-height: 90vh;
+        object-fit: contain;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        background: rgba(255, 255, 255, 0.9);
+        color: #2c3e50;
+        font-size: 1rem;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      footer .quote {
+        font-style: italic;
+        color: #e91e63;
+        margin-bottom: 0.5rem;
+      }
+
+      footer .names {
+        font-weight: bold;
+      }
+
+      /* Animations */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+          padding: 1.5rem 1rem;
+        }
+
+        .video-container {
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          gap: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .video-container {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+          gap: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Trang Chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="photo.html" id="show-photos">Ảnh</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="show-videos">Video</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <h1>Album Video Kỷ Niệm Thiện và Tiên</h1>
+
+    <!-- Video Section -->
+    <div class="video-container">
+      <div class="video-item">
+        <video poster="">
+          <source src="./access/video/6438981013040.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <!-- Thêm các video khác nếu có -->
+      <div class="video-item">
+        <video poster="">
+          <source src="./access/video/6438981013040.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <!-- Fullscreen Video Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+      <span class="close-btn" id="closeModal">×</span>
+      <video
+        class="fullscreen-video"
+        id="fullscreenVideo"
+        controls
+        autoplay
+        muted
+      >
+        <source src="" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <p class="quote">"Những khoảnh khắc động mãi là kỷ niệm không quên."</p>
+      <p class="names">Thiện & Tiên - 10/10/2024</p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Fullscreen video logic
+      const videoItems = document.querySelectorAll(".video-item");
+      const fullscreenModal = document.getElementById("fullscreenModal");
+      const fullscreenVideo = document.getElementById("fullscreenVideo");
+      const closeModal = document.getElementById("closeModal");
+
+      videoItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const videoSrc = item.querySelector("video source").src;
+          fullscreenVideo.querySelector("source").src = videoSrc;
+          fullscreenVideo.load(); // Tải lại video với source mới
+          fullscreenVideo.play(); // Phát video trong modal
+          fullscreenModal.classList.add("active");
+        });
+      });
+
+      closeModal.addEventListener("click", () => {
+        fullscreenModal.classList.remove("active");
+        fullscreenVideo.pause(); // Tạm dừng video khi đóng modal
+      });
+
+      fullscreenModal.addEventListener("click", (e) => {
+        if (e.target === fullscreenModal) {
+          fullscreenModal.classList.remove("active");
+          fullscreenVideo.pause();
+        }
+      });
+    </script>
+  </body>
+</html>
