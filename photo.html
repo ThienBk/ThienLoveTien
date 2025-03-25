@@ -66,25 +66,27 @@
       }
 
       .album-container {
-        max-width: 1200px;
+        max-width: 100%;
         margin: 2rem auto;
-        padding: 20px;
+        padding: 10px;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
       }
 
       .album-item {
         position: relative;
         overflow: hidden;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
+        cursor: pointer;
+        aspect-ratio: 9 / 16; /* Tỷ lệ dọc cho ảnh chụp từ điện thoại */
       }
 
       .album-item img {
         width: 100%;
-        height: 250px;
+        height: 100%;
         object-fit: cover;
         display: block;
         transition: transform 0.3s ease;
@@ -98,14 +100,37 @@
         transform: scale(1.1);
       }
 
-      .album-item::after {
-        content: '♥';
+      /* Fullscreen Image Modal */
+      .fullscreen-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fullscreen-modal.active {
+        display: flex;
+      }
+
+      .fullscreen-image {
+        max-width: 90%;
+        max-height: 90vh;
+        object-fit: contain;
+      }
+
+      .close-btn {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 20px;
+        right: 20px;
+        color: white;
         font-size: 2rem;
-        color: #ff6f61;
-        opacity: 0.7;
+        cursor: pointer;
       }
 
       /* Footer */
@@ -151,12 +176,8 @@
         }
 
         .album-container {
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 15px;
-        }
-
-        .album-item img {
-          height: 200px;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 8px;
         }
       }
 
@@ -166,12 +187,12 @@
         }
 
         .album-container {
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 10px;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 5px;
         }
 
-        .album-item img {
-          height: 150px;
+        .album-item {
+          aspect-ratio: 9 / 16;
         }
       }
     </style>
@@ -236,6 +257,12 @@
       </div>
     </div>
 
+    <!-- Fullscreen Modal -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <img class="fullscreen-image" id="fullscreenImage" src="" alt="Fullscreen Image" />
+    </div>
+
     <!-- Footer Section -->
     <footer>
       <p class="quote">"Những khoảnh khắc bên nhau là những kỷ niệm đẹp nhất."</p>
@@ -248,13 +275,36 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      // Fullscreen image logic
+      const albumItems = document.querySelectorAll(".album-item");
+      const fullscreenModal = document.getElementById("fullscreenModal");
+      const fullscreenImage = document.getElementById("fullscreenImage");
+      const closeModal = document.getElementById("closeModal");
+
+      albumItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const imgSrc = item.querySelector("img").src;
+          fullscreenImage.src = imgSrc;
+          fullscreenModal.classList.add("active");
+        });
+      });
+
+      closeModal.addEventListener("click", () => {
+        fullscreenModal.classList.remove("active");
+      });
+
+      fullscreenModal.addEventListener("click", (e) => {
+        if (e.target === fullscreenModal) {
+          fullscreenModal.classList.remove("active");
+        }
+      });
+
       // Navbar functionality
       const showVideosBtn = document.getElementById("show-videos");
 
       showVideosBtn.addEventListener("click", (e) => {
         e.preventDefault();
         alert("Chuyển đến trang video");
-        // Logic để chuyển đến trang video
       });
     </script>
   </body>
