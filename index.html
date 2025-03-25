@@ -251,22 +251,22 @@
         }
       }
 
-      /* FAB Styles - Updated for Mobile and Clickable */
+      /* FAB Styles - Updated for Mobile */
       .fab-wrapper {
         position: fixed;
-        bottom: 4rem;
+        bottom: 4rem; /* Slightly higher for better reach on mobile */
         right: 2rem;
         z-index: 1000;
-        user-select: none;
+        user-select: none; /* Prevent text selection while dragging */
         -webkit-user-select: none;
-        -webkit-touch-callout: none;
+        -webkit-touch-callout: none; /* Disable long-press context menu on iOS */
       }
 
       .fab {
         position: absolute;
         bottom: -1rem;
         right: -1rem;
-        width: 5rem;
+        width: 5rem; /* Larger for easier tapping */
         height: 5rem;
         background: #126ee2;
         border-radius: 50%;
@@ -277,7 +277,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        touch-action: none;
+        touch-action: none; /* Prevent default scrolling while dragging */
       }
 
       .fab:before {
@@ -372,7 +372,6 @@
         transition: all 0.3s ease;
         transform-origin: bottom right;
         transform: scale(0);
-        z-index: 1001;
       }
 
       .fab-checkbox:checked ~ .fab-wheel {
@@ -382,8 +381,8 @@
       .fab-action {
         position: absolute;
         background: #0f1941;
-        width: 4rem;
-        height: 4rem;
+        width: 3.5rem; /* Slightly larger for better tap target */
+        height: 3.5rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -392,10 +391,7 @@
         box-shadow: 0 0.1rem 1rem rgba(24, 66, 154, 0.82);
         transition: all 0.3s ease;
         opacity: 0;
-        font-size: 1.8rem;
-        z-index: 1002;
-        cursor: pointer;
-        touch-action: auto;
+        font-size: 1.5rem; /* Larger icons for visibility */
       }
 
       .fab-checkbox:checked ~ .fab-wheel .fab-action {
@@ -420,65 +416,6 @@
         bottom: 3.4rem;
       }
       .fab-wheel .fab-action-4 {
-        left: 0;
-        bottom: -1rem;
-      }
-
-      .fab-wrapper.left .fab-wheel {
-        transform-origin: bottom left !important;
-        right: auto !important;
-        left: 0 !important;
-      }
-      .fab-wrapper.right .fab-wheel {
-        transform-origin: bottom right !important;
-        right: 0 !important;
-        left: auto !important;
-      }
-      .fab-wrapper.top .fab-wheel {
-        transform-origin: top right !important;
-        bottom: auto !important;
-        top: 0 !important;
-      }
-      .fab-wrapper.bottom .fab-wheel {
-        transform-origin: bottom right !important;
-        bottom: 0 !important;
-        top: auto !important;
-      }
-
-      .fab-wrapper.left .fab-wheel .fab-action-1 {
-        left: -1rem;
-        right: auto;
-        top: 0;
-      }
-      .fab-wrapper.left .fab-wheel .fab-action-2 {
-        left: 3.4rem;
-        right: auto;
-        top: 0.5rem;
-      }
-      .fab-wrapper.left .fab-wheel .fab-action-3 {
-        right: 0.5rem;
-        left: auto;
-        bottom: 3.4rem;
-      }
-      .fab-wrapper.left .fab-wheel .fab-action-4 {
-        right: 0;
-        left: auto;
-        bottom: -1rem;
-      }
-
-      .fab-wrapper.top .fab-wheel .fab-action-1 {
-        right: -1rem;
-        top: 0;
-      }
-      .fab-wrapper.top .fab-wheel .fab-action-2 {
-        right: 3.4rem;
-        top: 0.5rem;
-      }
-      .fab-wrapper.top .fab-wheel .fab-action-3 {
-        left: 0.5rem;
-        bottom: 3.4rem;
-      }
-      .fab-wrapper.top .fab-wheel .fab-action-4 {
         left: 0;
         bottom: -1rem;
       }
@@ -762,12 +699,10 @@
 
         setInterval(createHeart, 300);
 
-        // FAB Dragging Logic - Updated for Mobile and Clickable Actions
+        // FAB Dragging Logic - Updated for Mobile
         const fabWrapper = document.querySelector('.fab-wrapper');
-        const fabActions = document.querySelectorAll('.fab-action');
         let isDragging = false;
         let initialX, initialY;
-        let dragStartTime;
 
         // Ensure FAB has initial position
         fabWrapper.style.left = (window.innerWidth - fabWrapper.offsetWidth - 20) + 'px'; // 20px from right
@@ -776,35 +711,9 @@
         fabWrapper.addEventListener('touchstart', startDragging, { passive: false });
         fabWrapper.addEventListener('mousedown', startDragging);
 
-        // Ngăn sự kiện kéo thả lan truyền khi click vào fab-action
-        fabActions.forEach(action => {
-          action.addEventListener('touchstart', (e) => {
-            e.stopPropagation(); // Ngăn sự kiện kéo thả
-          });
-          action.addEventListener('mousedown', (e) => {
-            e.stopPropagation(); // Ngăn sự kiện kéo thả
-          });
-
-          // Thêm sự kiện touchend để xử lý click trên mobile
-          action.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // Nếu có href, chuyển hướng
-            if (action.href) {
-              window.location.href = action.href;
-            }
-          });
-
-          // Đảm bảo click trên desktop vẫn hoạt động
-          action.addEventListener('click', (e) => {
-            e.stopPropagation();
-          });
-        });
-
         function startDragging(e) {
           e.preventDefault();
           isDragging = true;
-          dragStartTime = Date.now();
           
           const touch = e.type === 'touchstart' ? e.touches[0] : e;
           initialX = touch.clientX - parseFloat(fabWrapper.style.left || fabWrapper.offsetLeft);
@@ -815,29 +724,6 @@
           document.addEventListener('mousemove', drag);
           document.addEventListener('touchend', stopDragging);
           document.addEventListener('mouseup', stopDragging);
-        }
-
-        function updateFabDirection() {
-          const threshold = 50; // Khoảng cách từ cạnh để xác định hướng (px)
-          const fabRect = fabWrapper.getBoundingClientRect();
-          const windowWidth = window.innerWidth;
-          const windowHeight = window.innerHeight;
-
-          // Xóa các lớp hướng cũ
-          fabWrapper.classList.remove('left', 'right', 'top', 'bottom');
-
-          // Kiểm tra vị trí và áp dụng lớp hướng phù hợp
-          if (fabRect.left < threshold) {
-            fabWrapper.classList.add('left'); // Sát trái, mở sang phải
-          } else if (fabRect.right > windowWidth - threshold) {
-            fabWrapper.classList.add('right'); // Sát phải, mở sang trái
-          }
-
-          if (fabRect.top < threshold) {
-            fabWrapper.classList.add('top'); // Sát trên, mở xuống dưới
-          } else if (fabRect.bottom > windowHeight - threshold) {
-            fabWrapper.classList.add('bottom'); // Sát dưới, mở lên trên
-          }
         }
 
         function drag(e) {
@@ -854,7 +740,7 @@
           newX = Math.max(0, Math.min(newX, maxX));
           newY = Math.max(0, Math.min(newY, maxY));
 
-          // Snap to edges
+          // Snap to edges (optional)
           const snapDistance = 10;
           if (newX <= snapDistance) newX = 0;
           if (newX >= maxX - snapDistance) newX = maxX;
@@ -865,22 +751,15 @@
           fabWrapper.style.top = newY + 'px';
           fabWrapper.style.right = 'auto';
           fabWrapper.style.bottom = 'auto';
-
-          // Cập nhật hướng của FAB
-          updateFabDirection();
         }
 
-        function stopDragging(e) {
-          e.preventDefault();
+        function stopDragging() {
           isDragging = false;
           document.body.classList.remove('dragging');
           document.removeEventListener('touchmove', drag);
           document.removeEventListener('mousemove', drag);
           document.removeEventListener('touchend', stopDragging);
           document.removeEventListener('mouseup', stopDragging);
-
-          // Cập nhật hướng sau khi dừng kéo
-          updateFabDirection();
         }
 
         // Handle window resize
@@ -895,13 +774,7 @@
 
           fabWrapper.style.left = currentLeft + 'px';
           fabWrapper.style.top = currentTop + 'px';
-
-          // Cập nhật hướng khi thay đổi kích thước
-          updateFabDirection();
         });
-
-        // Cập nhật hướng ngay khi tải trang
-        updateFabDirection();
 
         // Navbar functionality
         const showPhotoBtn = document.getElementById('show-photo');
