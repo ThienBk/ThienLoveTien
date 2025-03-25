@@ -254,6 +254,8 @@
   position: fixed;
   bottom: 3rem;
   right: 3rem;
+  cursor: move;
+  z-index: 1000;
 }
 .fab-checkbox {
   display: none;
@@ -496,6 +498,7 @@
           opacity: 1;
         }
       }
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -708,6 +711,86 @@
           window.location.href = "videos.html"; // Chuyển hướng đến trang video
         });
       });
+      
+      // Dragging functionality for FAB
+const fabWrapper = document.querySelector('.fab-wrapper');
+let isDragging = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+
+fabWrapper.addEventListener('mousedown', startDragging);
+fabWrapper.addEventListener('touchstart', startDragging); // Support touch devices
+
+function startDragging(e) {
+  e.preventDefault();
+  initialX = e.clientX || e.touches[0].clientX;
+  initialY = e.clientY || e.touches[0].clientY;
+
+  isDragging = true;
+
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('touchmove', drag);
+  document.addEventListener('mouseup', stopDragging);
+  document.addEventListener('touchend', stopDragging);
+}
+
+function drag(e) {
+  if (isDragging) {
+    e.preventDefault();
+    currentX = e.clientX || e.touches[0].clientX;
+    currentY = e.clientY || e.touches[0].clientY;
+
+    let newX = fabWrapper.offsetLeft + (currentX - initialX);
+    let newY = fabWrapper.offsetTop + (currentY - initialY);
+
+    // Get viewport dimensions
+    const maxX = window.innerWidth - fabWrapper.offsetWidth;
+    const maxY = window.innerHeight - fabWrapper.offsetHeight;
+
+    // Constrain within viewport
+    newX = Math.max(0, Math.min(newX, maxX));
+    newY = Math.max(0, Math.min(newY, maxY));
+
+    // Snap to edges (optional: adjust the snap distance as needed)
+    const snapDistance = 10; // Pixels from edge to snap
+    if (newX <= snapDistance) newX = 0;
+    if (newX >= maxX - snapDistance) newX = maxX;
+    if (newY <= snapDistance) newY = 0;
+    if (newY >= maxY - snapDistance) newY = maxY;
+
+    fabWrapper.style.left = newX + 'px';
+    fabWrapper.style.top = newY + 'px';
+    fabWrapper.style.right = 'auto'; // Override fixed positioning
+    fabWrapper.style.bottom = 'auto';
+
+    initialX = currentX;
+    initialY = currentY;
+  }
+}
+
+function stopDragging() {
+  isDragging = false;
+  document.removeEventListener('mousemove', drag);
+  document.removeEventListener('touchmove', drag);
+  document.removeEventListener('mouseup', stopDragging);
+  document.removeEventListener('touchend', stopDragging);
+}
+
+// Ensure FAB stays in bounds on window resize
+window.addEventListener('resize', () => {
+  const maxX = window.innerWidth - fabWrapper.offsetWidth;
+  const maxY = window.innerHeight - fabWrapper.offsetHeight;
+  let currentLeft = parseFloat(fabWrapper.style.left || fabWrapper.offsetLeft);
+  let currentTop = parseFloat(fabWrapper.style.top || fabWrapper.offsetTop);
+
+  currentLeft = Math.max(0, Math.min(currentLeft, maxX));
+  currentTop = Math.max(0, Math.min(currentTop, maxY));
+
+  fabWrapper.style.left = currentLeft + 'px';
+  fabWrapper.style.top = currentTop + 'px';
+});
     </script>
   </body>
 </html>
